@@ -42,6 +42,7 @@ public interface RetryContext extends AttributeAccessor {
 	boolean isExhaustedOnly();
 
 	/**
+     * <p>获取父上下文。</p>
 	 * Accessor for the parent context if retry blocks are nested.
 	 * 
 	 * @return the parent or null if there is none.
@@ -49,6 +50,7 @@ public interface RetryContext extends AttributeAccessor {
 	RetryContext getParent();
 
 	/**
+     * <p>获取重试次数。</p>
 	 * Counts the number of retry attempts. Before the first attempt this
 	 * counter is zero, and before the first and subsequent attempts it should
 	 * increment accordingly.

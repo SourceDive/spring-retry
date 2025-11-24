@@ -17,6 +17,7 @@
 package org.springframework.retry;
 
 /**
+ * <p>重试策略。</p>
  * A {@link RetryPolicy} is responsible for allocating and managing resources
  * needed by {@link RetryOperations}. The {@link RetryPolicy} allows retry
  * operations to be aware of their context. Context can be internal to the retry
@@ -30,12 +31,14 @@ package org.springframework.retry;
 public interface RetryPolicy {
 
 	/**
+     * <p>是否可以重试。</p>
 	 * @param context the current retry status
 	 * @return true if the operation can proceed
 	 */
 	boolean canRetry(RetryContext context);
 
 	/**
+     * <p>开启重试上下文。</p>
 	 * Acquire resources needed for the retry operation. The callback is passed
 	 * in so that marker interfaces can be used and a manager can collaborate
 	 * with the callback to set up some state in the status token.
@@ -47,6 +50,7 @@ public interface RetryPolicy {
 	RetryContext open(RetryContext parent);
 
 	/**
+     * <p>关闭重试上下文。</p>
 	 * @param context a retry status created by the
 	 * {@link #open(RetryContext)} method of this manager.
 	 */
