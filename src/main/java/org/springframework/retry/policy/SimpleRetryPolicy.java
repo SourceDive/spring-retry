@@ -44,10 +44,12 @@ import org.springframework.retry.context.RetryContextSupport;
 public class SimpleRetryPolicy implements RetryPolicy {
 
 	/**
+     * <p>默认最大重试次数。</p>
 	 * The default limit to the number of attempts for a new policy.
 	 */
 	public final static int DEFAULT_MAX_ATTEMPTS = 3;
 
+    // 最大重试次数
 	private volatile int maxAttempts;
 
 	private BinaryExceptionClassifier retryableClassifier = new BinaryExceptionClassifier(false);

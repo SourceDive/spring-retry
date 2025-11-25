@@ -26,6 +26,8 @@ package org.springframework.retry;
 public interface RetryCallback<T> {
 
 	/**
+     * <p>执行重试逻辑。</p>
+     * <p>需要幂等。</p>
 	 * Execute an operation with retry semantics. Operations should generally be
 	 * idempotent, but implementations may choose to implement compensation
 	 * semantics when an operation is retried.

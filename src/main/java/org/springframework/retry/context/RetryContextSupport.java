@@ -25,6 +25,7 @@ public class RetryContextSupport extends AttributeAccessorSupport implements Ret
 
 	private boolean terminate = false;
 
+    // 当前重试次数。
 	private int count;
 
 	private Throwable lastException;
@@ -57,6 +58,7 @@ public class RetryContextSupport extends AttributeAccessorSupport implements Ret
 	}
 
 	/**
+     * <p>注册异常记录。</p>
 	 * Set the exception for the public interface {@link RetryContext}, and
 	 * also increment the retry count if the throwable is non-null.<br/>
 	 * 
@@ -72,6 +74,8 @@ public class RetryContextSupport extends AttributeAccessorSupport implements Ret
 	 */
 	public void registerThrowable(Throwable throwable) {
 		this.lastException = throwable;
+
+        // 更新当前重试次数。
 		if (throwable != null)
 			count++;
 	}

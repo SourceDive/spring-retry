@@ -207,6 +207,7 @@ public class RetryTemplate implements RetryOperations {
 
 		// Make sure the context is available globally for clients who need
 		// it...
+        // 将 context 绑定到当前线程。
 		RetrySynchronizationManager.register(context);
 
 		Throwable lastException = null;
@@ -236,6 +237,8 @@ public class RetryTemplate implements RetryOperations {
 					// Reset the last exception, so if we are successful
 					// the close interceptors will not think we failed...
 					lastException = null;
+
+                    // 触发重试
 					return retryCallback.doWithRetry(context);
 				}
 				catch (Throwable e) {

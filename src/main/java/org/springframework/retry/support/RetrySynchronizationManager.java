@@ -58,9 +58,9 @@ public final class RetrySynchronizationManager {
 	 * @return the old context if there was one
 	 */
 	public static RetryContext register(RetryContext context) {
-		RetryContext oldContext = getContext();
+		RetryContext oldContext = getContext(); // 暂存
 		RetrySynchronizationManager.context.set(context);
-		return oldContext;
+		return oldContext; // 恢复
 	}
 
 	/**

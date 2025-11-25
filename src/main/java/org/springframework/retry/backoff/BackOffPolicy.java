@@ -19,6 +19,7 @@ package org.springframework.retry.backoff;
 import org.springframework.retry.RetryContext;
 
 /**
+ * <p>退避策略。</p>
  * Strategy interface to control back off between attempts in a single
  * {@link org.springframework.retry.support.RetryTemplate retry operation}.
  * <p/> Implementations are expected to be thread-safe and should be designed

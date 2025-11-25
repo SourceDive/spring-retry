@@ -57,6 +57,7 @@ public interface RetryPolicy {
 	void close(RetryContext context);
 
 	/**
+     * <p>注册异常。</p>
 	 * Called once per retry attempt, after the callback fails.
 	 * 
 	 * @param context the current status object.
