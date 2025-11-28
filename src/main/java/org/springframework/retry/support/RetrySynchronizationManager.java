@@ -40,6 +40,7 @@ public final class RetrySynchronizationManager {
 	private static final ThreadLocal<RetryContext> context = new ThreadLocal<RetryContext>();
 
 	/**
+     * <p>获取当前上下文。</p>
 	 * Public accessor for the locally enclosing {@link RetryContext}.
 	 * 
 	 * @return the current retry context, or null if there isn't one
@@ -50,6 +51,7 @@ public final class RetrySynchronizationManager {
 	}
 
 	/**
+     * <p>注册上下文。</p>
 	 * Method for registering a context - should only be used by
 	 * {@link RetryOperations} implementations to ensure that
 	 * {@link #getContext()} always returns the correct value.

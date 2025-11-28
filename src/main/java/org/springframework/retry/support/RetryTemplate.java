@@ -247,6 +247,7 @@ public class RetryTemplate implements RetryOperations {
 
 					doOnErrorInterceptors(retryCallback, context, e);
 
+                    // 注册异常。
 					try {
 						registerThrowable(retryPolicy, state, context, e);
 					} catch (Exception ex) {

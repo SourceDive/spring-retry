@@ -28,6 +28,7 @@ public class RetryContextSupport extends AttributeAccessorSupport implements Ret
     // 当前重试次数。
 	private int count;
 
+    // 最后抛出的异常。
 	private Throwable lastException;
 
 	private RetryContext parent;
@@ -58,7 +59,7 @@ public class RetryContextSupport extends AttributeAccessorSupport implements Ret
 	}
 
 	/**
-     * <p>注册异常记录。</p>
+     * <p>注册异常。</p>
 	 * Set the exception for the public interface {@link RetryContext}, and
 	 * also increment the retry count if the throwable is non-null.<br/>
 	 * 

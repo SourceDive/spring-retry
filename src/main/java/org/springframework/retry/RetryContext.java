@@ -19,6 +19,7 @@ package org.springframework.retry;
 import org.springframework.core.AttributeAccessor;
 
 /**
+ * <p>重试上下文。</p>
  * Low-level access to ongoing retry operation. Normally not needed by clients,
  * but can be used to alter the course of the retry, e.g. force an early
  * termination.
@@ -50,7 +51,7 @@ public interface RetryContext extends AttributeAccessor {
 	RetryContext getParent();
 
 	/**
-     * <p>获取重试次数。</p>
+     * <p>获取当前重试次数。</p>
 	 * Counts the number of retry attempts. Before the first attempt this
 	 * counter is zero, and before the first and subsequent attempts it should
 	 * increment accordingly.

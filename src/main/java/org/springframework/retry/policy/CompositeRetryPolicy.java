@@ -117,6 +117,9 @@ public class CompositeRetryPolicy implements RetryPolicy {
 		((RetryContextSupport) context).registerThrowable(throwable);
 	}
 
+    /**
+     * 重试上下文集合。
+     */
 	@SuppressWarnings("serial")
 	private class CompositeRetryContext extends RetryContextSupport {
 		RetryContext[] contexts;
