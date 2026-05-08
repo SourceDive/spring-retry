@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 package org.springframework.retry.policy;
 
 import java.lang.ref.SoftReference;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.retry.RetryContext;
@@ -30,46 +28,50 @@ import org.springframework.retry.RetryContext;
  * @see MapRetryContextCache for non-soft referenced version
  * @author Dave Syer
  */
-public class SoftReferenceMapRetryContextCache implements RetryContextCache {
+public class SoftReferenceMapRetryContextCache extends AbstractMapRetryContextCache<SoftReference<RetryContext>> {
 
 	/**
-	 * Default value for maximum capacity of the cache. This is set to a reasonably low
-	 * value (4096) to avoid users inadvertently filling the cache with item keys that are
-	 * inconsistent.
-	 */
-	public static final int DEFAULT_CAPACITY = 4096;
-
-	private final Map<Object, SoftReference<RetryContext>> map = Collections.synchronizedMap(new HashMap<>());
-
-	private int capacity;
-
-	/**
-	 * Create a {@link SoftReferenceMapRetryContextCache} with default capacity.
+	 * Create an instance with {@link #DEFAULT_CAPACITY the default capacity}
 	 */
 	public SoftReferenceMapRetryContextCache() {
 		this(DEFAULT_CAPACITY);
 	}
 
 	/**
-	 * @param defaultCapacity the default capacity
+	 * Create an instance with the given capacity, removing the eldest entries when the
+	 * cache is full
+	 * @param capacity the initial capacity of the cache
 	 */
-	public SoftReferenceMapRetryContextCache(int defaultCapacity) {
-		super();
-		this.capacity = defaultCapacity;
+	public SoftReferenceMapRetryContextCache(int capacity) {
+		this(capacity, true);
 	}
 
 	/**
-	 * Public setter for the capacity. Prevents the cache from growing unboundedly if
+	 * Create an instance with the given capacity and the policy to apply when the cache
+	 * is full.
+	 * @param capacity the size of the cache
+	 * @param removeEldestEntries whether to remove the eldest entries when the cache is
+	 * full
+	 * @since 1.3.5
+	 */
+	public SoftReferenceMapRetryContextCache(int capacity, boolean removeEldestEntries) {
+		super(capacity, removeEldestEntries);
+	}
+
+	/**
+	 * Update the capacity of this cache. Prevent the cache from growing unboundedly if
 	 * items that fail are misidentified and two references to an identical item actually
 	 * do not have the same key. This can happen when users implement equals and hashCode
 	 * based on mutable fields, for instance.
 	 * @param capacity the capacity to set
 	 */
+	@Override
 	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+		super.setCapacity(capacity);
 	}
 
 	public boolean containsKey(Object key) {
+		Map<Object, SoftReference<RetryContext>> map = getMap();
 		if (!map.containsKey(key)) {
 			return false;
 		}
@@ -80,21 +82,14 @@ public class SoftReferenceMapRetryContextCache implements RetryContextCache {
 		return map.containsKey(key);
 	}
 
-	public RetryContext get(Object key) {
-		return map.get(key).get();
+	@Override
+	protected SoftReference<RetryContext> toValue(RetryContext context) {
+		return new SoftReference<>(context);
 	}
 
-	public void put(Object key, RetryContext context) {
-		if (map.size() >= capacity) {
-			throw new RetryCacheCapacityExceededException("Retry cache capacity limit breached. "
-					+ "Do you need to re-consider the implementation of the key generator, "
-					+ "or the equals and hashCode of the items that failed?");
-		}
-		map.put(key, new SoftReference<>(context));
-	}
-
-	public void remove(Object key) {
-		map.remove(key);
+	@Override
+	protected RetryContext fromValue(SoftReference<RetryContext> value) {
+		return value.get();
 	}
 
 }

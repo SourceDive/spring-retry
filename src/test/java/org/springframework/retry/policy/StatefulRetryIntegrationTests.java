@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2023 the original author or authors.
+ * Copyright 2006-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -185,6 +185,33 @@ public class StatefulRetryIntegrationTests {
 				throw new RuntimeException();
 			}
 			return "bar";
+		}
+
+	}
+
+	static class SerializedMapRetryContextCache extends AbstractMapRetryContextCache<byte[]> {
+
+		public SerializedMapRetryContextCache() {
+			super(DEFAULT_CAPACITY, true);
+		}
+
+		@Override
+		protected byte[] toValue(RetryContext context) {
+			return org.springframework.util.SerializationUtils.serialize(context);
+		}
+
+		@Override
+		protected RetryContext fromValue(byte[] value) {
+			try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(
+					new java.io.ByteArrayInputStream(value))) {
+				return (RetryContext) ois.readObject();
+			}
+			catch (java.io.IOException ex) {
+				throw new IllegalArgumentException("Failed to deserialize object", ex);
+			}
+			catch (ClassNotFoundException ex) {
+				throw new IllegalStateException("Failed to deserialize object type", ex);
+			}
 		}
 
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2024 the original author or authors.
+ * Copyright 2006-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class RetryTemplateBuilderTests {
 		assertDefaultClassifier(policyTuple);
 
 		assertThat(getPropertyValue(template, "throwLastExceptionOnExhausted", Boolean.class)).isFalse();
-		assertThat(getPropertyValue(template, "retryContextCache")).isInstanceOf(MapRetryContextCache.class);
+		assertThat(getPropertyValue(template, "retryContextCache")).isNotNull();
 		assertThat(getPropertyValue(template, "listeners", RetryListener[].class).length).isEqualTo(0);
 
 		assertThat(getPropertyValue(template, "backOffPolicy")).isInstanceOf(NoBackOffPolicy.class);

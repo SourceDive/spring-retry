@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2023 the original author or authors.
+ * Copyright 2006-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,8 +181,9 @@ public class StatefulRecoveryRetryTests {
 	@Test
 	public void testCacheCapacity() throws Throwable {
 
+		MapRetryContextCache cache = new MapRetryContextCache(1);
 		this.retryTemplate.setRetryPolicy(new SimpleRetryPolicy(1));
-		this.retryTemplate.setRetryContextCache(new MapRetryContextCache(1));
+		this.retryTemplate.setRetryContextCache(cache);
 
 		RetryCallback<Object, Exception> callback = context -> {
 			StatefulRecoveryRetryTests.this.count++;
@@ -193,9 +194,12 @@ public class StatefulRecoveryRetryTests {
 			.isThrownBy(() -> this.retryTemplate.execute(callback, new DefaultRetryState("foo")))
 			.withMessage("Barf!");
 
-		assertThatExceptionOfType(RetryException.class)
+		assertThatExceptionOfType(RuntimeException.class)
 			.isThrownBy(() -> this.retryTemplate.execute(callback, new DefaultRetryState("bar")))
-			.withStackTraceContaining("capacity");
+			.withMessage("Barf!");
+
+		assertThat(cache.containsKey("bar")).isTrue();
+		assertThat(cache.containsKey("foo")).isFalse();
 	}
 
 	@Test

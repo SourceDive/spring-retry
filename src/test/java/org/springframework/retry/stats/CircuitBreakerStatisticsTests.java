@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2023 the original author or authors.
+ * Copyright 2006-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public class CircuitBreakerStatisticsTests {
 		this.recovery = context -> RECOVERED;
 		this.retryTemplate = new RetryTemplate();
 		this.cache = new MapRetryContextCache();
-		this.retryTemplate.setRetryContextCache(this.cache);
+		this.retryTemplate.setCircuitBreakerRetryContextCache(this.cache);
 		retryTemplate.setListeners(new RetryListener[] { listener });
 		this.callback.setAttemptsBeforeSuccess(1);
 		// No rollback by default (so exceptions are not rethrown)
