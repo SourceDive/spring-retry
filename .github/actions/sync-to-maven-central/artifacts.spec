@@ -5,8 +5,8 @@
         "items.find": {
           "$and": [
             {
-              "@build.name": "${buildname}",
-              "@build.number": "${buildnumber}",
+              "@build.name": "${buildName}",
+              "@build.number": "${buildNumber}",
               "path": {
                 "$match": "org/springframework*"
               }
