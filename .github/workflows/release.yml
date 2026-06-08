@@ -3,20 +3,20 @@ on:
   push:
     tags:
       - v2.0.[0-9]+
+permissions:
+  contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-
 env:
   DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }}
-
 jobs:
   build-and-stage-release:
-    if: ${{ github.repository == 'spring-projects/spring-retry' }}
     name: Build and Stage Release
+    if: ${{ github.repository == 'spring-projects/spring-retry' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Build and Publish
         id: build-and-publish
         uses: ./.github/actions/build
@@ -45,13 +45,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@v5
       - name: Sync to Maven Central
         uses: ./.github/actions/sync-to-maven-central
         with:
-          jfrog-cli-config-token: ${{ secrets.JF_ARTIFACTORY_SPRING }}
+          central-token-password: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
           central-token-username: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
-          central-token: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+          jfrog-cli-config-token: ${{ secrets.JF_ARTIFACTORY_SPRING }}
           spring-retry-version: ${{ needs.build-and-stage-release.outputs.version }}
   promote-release:
     name: Promote Release
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JFrog CLI
-        uses: jfrog/setup-jfrog-cli@7c95feb32008765e1b4e626b078dfd897c4340ad # v4.1.2
+        uses: jfrog/setup-jfrog-cli@5b06f730cc5a6f55d78b30753f8583454b08c0aa # v4.8.1
         env:
           JF_ENV_SPRING: ${{ secrets.JF_ARTIFACTORY_SPRING }}
       - name: Promote build
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@v5
       - name: Create GitHub Release
         uses: ./.github/actions/create-github-release
         with:

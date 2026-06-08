@@ -43,7 +43,7 @@
           ]
         }
       },
-      "target": "central_bundle/"
+      "target": "nexus/"
     }
   ]
 }
