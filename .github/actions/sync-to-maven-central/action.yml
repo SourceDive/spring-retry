@@ -32,4 +32,4 @@ runs:
     - name: Await
       uses: ./.github/actions/await-http-resource
       with:
-        url: ${{ format('https://repo.maven.apache.org/maven2/org/springframework/ws/spring-ws-core/{0}/spring-ws-core-{0}.jar', inputs.spring-ws-version) }}
+        url: ${{ format('https://repo.maven.apache.org/maven2/org/springframework/retry/spring-retry/{0}/spring-retry-{0}.jar', inputs.spring-retry-version) }}
