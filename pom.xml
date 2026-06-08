@@ -37,7 +37,7 @@
 		<junit-jupiter.version>5.12.2</junit-jupiter.version>
 		<log4j.version>2.24.3</log4j.version>
 		<mockito.version>5.17.0</mockito.version>
-		<spring.framework.version>6.2.19-SNAPSHOT</spring.framework.version>
+		<spring.framework.version>6.2.19</spring.framework.version>
 		<micrometer.version>1.15.12</micrometer.version>
 	</properties>
 
